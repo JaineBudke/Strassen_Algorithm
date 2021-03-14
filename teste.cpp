@@ -1,7 +1,7 @@
 #include <iostream>
 #include "operation.cpp"
 #include "metodo_simples.cpp"
-#include "strassenNovo.cpp"
+#include "strassen.cpp"
 
 #include <chrono>
 #include <math.h>

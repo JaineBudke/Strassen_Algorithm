@@ -34,31 +34,7 @@ int ** add(int ** A, int ** B, int n) {
     return C;
 
 }
-
-
-// Função para dividir uma matriz em sub-blocos
-void split(int ** M, int ** C, int iM, int jM, int nC) { // MUDEI AQUI, ADICIONEI nC, tem q passar o tamanho de C tbm
-
-    int i2 = iM;
-    for(int i1 = 0; i1 < nC; i1++, i2++) {
-        int j2 = jM;
-        for(int j1 = 0; j1 < nC; j1++, j2++)
-            C[i1][j1] = M[i2][j2];
-    }
-        
-}
-
-// Função para juntar os sub-blocos em uma única matriz
-void join(int ** C, int ** M, int iM, int jM, int nC) {
-
-    int i2 = iM;
-    for(int i1 = 0; i1 < nC; i1++, i2++) {
-        int j2 = jM;
-        for(int j1 = 0; j1 < nC; j1++, j2++)
-            M[i2][j2] = C[i1][j1];
-    }
-        
-}    
+    
 
 void freeMemory(int ** A11, int ** A12, int ** A21, int ** A22,
                 int ** B11, int ** B12, int ** B21, int ** B22,

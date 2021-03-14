@@ -6,14 +6,16 @@ int ** multiply(int ** A, int ** B, int n){
     	
     int ** C = initializeMatrix(n);
 
-    if (n <= 256) {
+    if (n <= 2) {
 
+        //C[0][0] = A[0][0] * B[0][0];
         C = multiplyNaive(A, B, n);
         return C;
 
     } 
     int k = n/2;
-    // declaração sub-blocos das matrizes
+    
+    // Declaração submatrizes
     int ** A11 = initializeMatrix(k);
     int ** A12 = initializeMatrix(k);
     int ** A21 = initializeMatrix(k);
@@ -23,18 +25,21 @@ int ** multiply(int ** A, int ** B, int n){
     int ** B21 = initializeMatrix(k);
     int ** B22 = initializeMatrix(k);
 
-    // Divide matriz A em 4 blocos
-    split(A, A11, 0 , 0, k);
-    split(A, A12, 0 , n/2, k);
-    split(A, A21, n/2, 0, k);
-    split(A, A22, n/2, n/2, k);
+    // Divide matriz original em submatrizes
+    for(int i=0; i<n/2; i++) {
+        for(int j=0; j<n/2; j++) {
+            A11[i][j] = A[i][j];
+            A12[i][j] = A[i][j+n/2];
+            A21[i][j] = A[i+n/2][j];
+            A22[i][j] = A[i+n/2][j+n/2];
+            
+            B11[i][j] = B[i][j];
+            B12[i][j] = B[i][j+n/2];
+            B21[i][j] = B[i+n/2][j];
+            B22[i][j] = B[i+n/2][j+n/2];    
+        }        
+    }  
     
-    // Divide matriz B em 4 blocos
-    split(B, B11, 0 , 0, k);
-    split(B, B12, 0 , n/2, k);
-    split(B, B21, n/2, 0, k);
-    split(B, B22, n/2, n/2, k);
-
     /** 
         Iremos fazer chamadas recursivas para essa função de modo a efetuar as seguintes operações:
         M1 = (A11 + A22)(B11 + B22)
@@ -65,12 +70,15 @@ int ** multiply(int ** A, int ** B, int n){
     int ** C21 = add(M2, M4, k);
     int ** C22 = add(sub(add(M1, M3, k), M2, k), M6, k);
 
-    
-    // junta os 4 sub-blocos numa única matriz
-    join(C11, C, 0 , 0, k);
-    join(C12, C, 0 , n/2, k);
-    join(C21, C, n/2, 0, k);
-    join(C22, C, n/2, n/2, k);
+    // Junta as 4 submatrizes numa única matriz 
+    for(int i=0; i<n/2; i++) {
+        for(int j=0; j<n/2; j++) {
+            C[i][j] = C11[i][j];
+            C[i][j+n/2] = C12[i][j];
+            C[i+n/2][j] = C21[i][j];
+            C[i+n/2][j+n/2] = C22[i][j];        
+        }        
+    }
 
     // libera a memória ocupada pelas matrizes
     freeMemory(A11, A12, A21, A22, B11, B12, B21, B22,
